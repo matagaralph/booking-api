@@ -2,10 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
-class Role extends Model {
+class Role extends \Spatie\Permission\Models\Role {
 
     const ROLE_ADMINISTRATOR = 1;
     const ROLE_OWNER = 2;
@@ -13,8 +10,4 @@ class Role extends Model {
     protected $fillable = [
         'name'
     ];
-
-    public function permissions(): BelongsToMany {
-        return $this->belongsToMany(Permission::class);
-    }
 }

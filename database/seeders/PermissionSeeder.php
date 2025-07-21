@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 
 class PermissionSeeder extends Seeder {
-
     public function run(): void {
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
         $allRoles = Role::all()->keyBy('id');
 
         $permissions = [
@@ -19,7 +19,7 @@ class PermissionSeeder extends Seeder {
         foreach ($permissions as $key => $roles) {
             $permission = Permission::create(['name' => $key]);
             foreach ($roles as $role) {
-                $allRoles[$role]->permissions()->attach($permission->id);
+                $allRoles[$role]->givePermissionTo($permission);
             }
         }
     }
