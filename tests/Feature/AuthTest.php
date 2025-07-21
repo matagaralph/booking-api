@@ -1,0 +1,44 @@
+<?php
+
+use App\Models\Role;
+
+test('registration fails with admin role', function () {
+    $response = $this->postJson('/api/v1/auth/register', [
+        'name' => 'Valid name',
+        'email' => 'valid@email.com',
+        'password' => 'ValidPassword',
+        'password_confirmation' => 'ValidPassword',
+        'role_id' => Role::ROLE_ADMINISTRATOR
+    ]);
+
+    $response->assertStatus(422);
+});
+
+test('registration succeeds with owner role', function () {
+    $response = $this->postJson('/api/v1/auth/register', [
+        'name' => 'Valid name',
+        'email' => 'valid@email.com',
+        'password' => 'ValidPassword',
+        'password_confirmation' => 'ValidPassword',
+        'role_id' => Role::ROLE_OWNER
+    ]);
+
+    $response->assertStatus(200)->assertJsonStructure([
+        'access_token',
+    ]);
+});
+
+
+test('registration succeeds with user role', function () {
+    $response = $this->postJson('/api/v1/auth/register', [
+        'name' => 'Valid name',
+        'email' => 'valid@email.com',
+        'password' => 'ValidPassword',
+        'password_confirmation' => 'ValidPassword',
+        'role_id' => Role::ROLE_USER
+    ]);
+
+    $response->assertStatus(200)->assertJsonStructure([
+        'access_token',
+    ]);
+});
