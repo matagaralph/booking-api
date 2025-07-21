@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rules\Password;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller {
     public function register(Request $request) {
@@ -22,15 +22,15 @@ class AuthController extends Controller {
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id' => $request->role_id,
+            'password' => Hash::make($request->password)
         ]);
+
+        $user->assignRole($request->role_id);
 
         return response()->json([
             'access_token' => $user->createToken('client')->plainTextToken,
         ]);
     }
 
-    public function login(Request $request) {
-    }
+    public function login(Request $request) {}
 }
