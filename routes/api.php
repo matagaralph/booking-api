@@ -17,5 +17,8 @@ Route::prefix('v1')->group(function () {
             [\App\Http\Controllers\Owner\PropertyController::class, 'index']);
         Route::get('user/bookings',
             [\App\Http\Controllers\User\BookingController::class, 'index']);
+
+        Route::post('owner/properties',
+            [\App\Http\Controllers\Owner\PropertyController::class, 'store']);
     });
 });
